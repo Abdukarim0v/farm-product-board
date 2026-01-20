@@ -1,0 +1,23 @@
+services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  orders:
+    build: ../orders
+    environment:
+      - REDIS_HOST=redis
+      - QUEUE_NAME=order_events
+    ports:
+      - "6000:6000"
+    depends_on:
+      - redis
+
+  notifier:
+    build: ../notifier
+    environment:
+      - REDIS_HOST=redis
+      - QUEUE_NAME=order_events
+    depends_on:
+      - redis
