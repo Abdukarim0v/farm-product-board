@@ -1,0 +1,10 @@
+services:
+  price-tracker:
+    build: ../price-tracker
+    ports:
+      - "7000:7000"
+    volumes:
+      - price_data:/data
+
+volumes:
+  price_data:
