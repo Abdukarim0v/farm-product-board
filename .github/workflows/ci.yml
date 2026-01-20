@@ -18,3 +18,9 @@ jobs:
 
       - name: Docker build frontend
         run: docker build -t farm-frontend:ci ./frontend
+              - name: Docker build orders service
+        run: docker build -t orders:ci ./orders
+
+      - name: Docker build notifier worker
+        run: docker build -t notifier:ci ./notifier
+
