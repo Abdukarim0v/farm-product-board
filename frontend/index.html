@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Farm Product Board</title>
+</head>
+
+<body>
+    <h1>Farm Product Update Board</h1>
+
+    <h3>Add product</h3>
+    <input id="name" placeholder="Name">
+    <input id="qty" type="number" placeholder="Qty">
+    <input id="price" type="number" placeholder="Price">
+    <button onclick="add()">Add</button>
+
+    <h3>Products</h3>
+    <pre id="out">Loading...</pre>
+
+    <script>
+        const API = "/api";
+
+        async function load() {
+            const r = await fetch(`${API}/products`);
+            const data = await r.json();
+            document.getElementById("out").textContent =
+                JSON.stringify(data, null, 2);
+        }
+
+        async function add() {
+            const body = {
+                name: document.getElementById("name").value,
+                qty: Number(document.getElementById("qty").value),
+                price: Number(document.getElementById("price").value)
+            };
+
+            const r = await fetch(`${API}/products`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            });
+
+            if (!r.ok) {
+                alert("Error adding product");
+                return;
+            }
+            await load();
+        }
+
+        load();
+    </script>
+</body>
+
+</html>

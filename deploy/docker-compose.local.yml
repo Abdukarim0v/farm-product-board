@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ../backend
+    container_name: farm-backend
+    environment:
+      - DB_PATH=/data/products.db
+    volumes:
+      - farm_data:/data
+
+  frontend:
+    build: ../frontend
+    container_name: farm-frontend
+
+  gateway:
+    image: nginx:alpine
+    container_name: farm-gateway
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+      - frontend
+
+volumes:
+  farm_data:
