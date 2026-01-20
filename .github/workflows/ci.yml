@@ -1,0 +1,20 @@
+name: CI
+on: [push, pull_request]
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Backend quick test
+        run: |
+          cd backend
+          python -m pip install -r requirements.txt
+          python -c "import app; print('backend import ok')"
+
+      - name: Docker build backend
+        run: docker build -t farm-backend:ci ./backend
+
+      - name: Docker build frontend
+        run: docker build -t farm-frontend:ci ./frontend
